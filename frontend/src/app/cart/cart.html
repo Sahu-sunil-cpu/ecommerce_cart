@@ -1,0 +1,84 @@
+<section class="cart-page">
+    <div class="cart-heading">
+        <div>
+            <p class="eyebrow">YOUR SHOPPING BAG</p>
+            <h1>Your Cart</h1>
+            <p>Review your items before checking out.</p>
+        </div>
+
+        <a routerLink="/" class="continue-link">Continue shopping →</a>
+    </div>
+
+    @if (cartService.items().length === 0) {
+    <div class="empty-cart">
+        <div class="empty-icon">🛍️</div>
+        <h2>Your cart is empty</h2>
+        <p>Looks like you haven't added anything yet.</p>
+        <a routerLink="/" class="shop-button">Explore products</a>
+    </div>
+    } @else {
+    <div class="cart-layout">
+        <div class="cart-items">
+            @for (item of cartService.items(); track item.product._id) {
+            <article class="cart-item">
+                <img [src]="item.product.image || 'https://placehold.co/160x160?text=Product'"
+                    [alt]="item.product.name" />
+
+                <div class="item-info">
+                    <p class="item-category">{{ item.product.category }}</p>
+                    <h3>{{ item.product.name }}</h3>
+                    <p class="item-price">
+                        {{ item.product.price | currency:'INR':'symbol':'1.0-0' }}
+                    </p>
+
+                    <div class="quantity-control">
+                        <button type="button" [disabled]="item.quantity <= 1"
+                            (click)="decrease(item.product._id, item.quantity)"
+                            aria-label="Decrease quantity">−</button>
+
+                        <span>{{ item.quantity }}</span>
+
+                        <button type="button" [disabled]="item.quantity >= item.product.stock"
+                            (click)="increase(item.product._id, item.quantity)"
+                            aria-label="Increase quantity">+</button>
+                    </div>
+                </div>
+
+                <div class="item-end">
+                    <strong>
+                        {{ item.product.price * item.quantity | currency:'INR':'symbol':'1.0-0' }}
+                    </strong>
+
+                    <button type="button" class="remove-button" (click)="remove(item.product._id)">Remove</button>
+                </div>
+            </article>
+            }
+        </div>
+
+        <aside class="order-summary">
+            <h2>Order summary</h2>
+
+            <div class="summary-row">
+                <span>Items ({{ cartService.itemCount() }})</span>
+                <span>{{ cartService.subtotal() | currency:'INR':'symbol':'1.0-0' }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span class="free-shipping">Calculated at checkout</span>
+            </div>
+
+            <div class="summary-total">
+                <span>Subtotal</span>
+                <strong>{{ cartService.subtotal() | currency:'INR':'symbol':'1.0-0' }}</strong>
+            </div>
+
+            <button type="button" class="checkout-button" disabled>
+                Checkout — coming next
+            </button>
+
+            <p class="secure-note">Your items are saved in this browser.</p>
+        </aside>
+    </div>
+    }
+</section>

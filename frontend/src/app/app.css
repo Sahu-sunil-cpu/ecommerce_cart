@@ -1,0 +1,122 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    background: #f8faf7;
+    color: #1c2922;
+}
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 76px;
+    padding: 0 clamp(18px, 5vw, 72px);
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid #e8ede8;
+    backdrop-filter: blur(12px);
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #1c2922;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    text-decoration: none;
+}
+
+.brand-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    background: #245638;
+    color: white;
+    font-size: 19px;
+}
+
+.brand-accent {
+    color: #398354;
+}
+
+.main-nav {
+    display: flex;
+    gap: 28px;
+}
+
+.main-nav a {
+    color: #68756c;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.main-nav a.active,
+.main-nav a:hover {
+    color: #245638;
+}
+
+.cart-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 11px 16px;
+    border: 1px solid #dfe8df;
+    border-radius: 12px;
+    background: #fff;
+    color: #245638;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.cart-link:hover {
+    background: #eff6ef;
+    border-color: #bfd4c2;
+}
+
+.cart-badge {
+    display: grid;
+    place-items: center;
+    min-width: 21px;
+    height: 21px;
+    padding: 0 5px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: #245638;
+    color: white;
+    font-size: 11px;
+}
+
+.page-content {
+    min-height: calc(100vh - 76px);
+}
+
+@media (max-width: 480px) {
+    .site-header {
+        min-height: 66px;
+        padding: 0 14px;
+    }
+
+    .brand {
+        font-size: 19px;
+    }
+
+    .main-nav {
+        display: none;
+    }
+
+    .cart-link {
+        padding: 10px 12px;
+    }
+}

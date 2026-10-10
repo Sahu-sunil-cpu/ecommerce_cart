@@ -1,0 +1,133 @@
+<section class="store">
+    <div class="hero">
+        <div class="hero-content">
+            <span class="eyebrow">THE EVERYDAY TECH EDIT</span>
+            <h1>Better gear.<br />Better everyday.</h1>
+            <p>
+                Thoughtfully selected technology to help you work,
+                create and enjoy more.
+            </p>
+            <a href="#catalog" class="hero-link">
+                Explore collection <span>↗</span>
+            </a>
+        </div>
+
+        <div class="hero-art">
+            <div class="art-circle"></div>
+            <div class="art-label">
+                <span>SHOP THE ESSENTIALS</span>
+                <strong>Technology, simplified.</strong>
+            </div>
+            <span class="art-symbol">✳</span>
+        </div>
+    </div>
+
+    <section id="catalog" class="catalog">
+        <div class="catalog-heading">
+            <div>
+                <span class="eyebrow">CURATED FOR YOU</span>
+                <h2>Explore our collection</h2>
+                <p>Find the right tools for your everyday.</p>
+            </div>
+
+            <div class="result-count">
+                {{ filteredProducts().length }} products
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <label class="search-box">
+                <span>⌕</span>
+                <input type="search" placeholder="Search products..." aria-label="Search products"
+                    (input)="setSearch($event)" />
+            </label>
+
+            <label class="sort-box">
+                <span>Sort by</span>
+                <select aria-label="Sort products" (change)="setSort($event)">
+                    <option value="featured">Featured</option>
+                    <option value="price-asc">Price: low to high</option>
+                    <option value="price-desc">Price: high to low</option>
+                    <option value="name">Name: A–Z</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="category-list" aria-label="Product categories">
+            @for (category of categories(); track category) {
+            <button class="category-chip" [class.active]="selectedCategory() === category"
+                [attr.aria-pressed]="selectedCategory() === category" (click)="selectCategory(category)">
+                {{ category }}
+            </button>
+            }
+        </div>
+
+        @if (loading()) {
+        <div class="status-panel" aria-live="polite">
+            <div class="spinner"></div>
+            <p>Finding your next favourite...</p>
+        </div>
+        } @else if (error()) {
+        <div class="status-panel error-panel" role="alert">
+            <h3>Something went wrong</h3>
+            <p>{{ error() }}</p>
+            <button class="retry-button" (click)="loadProducts()">
+                Try again
+            </button>
+        </div>
+        } @else if (filteredProducts().length === 0) {
+        <div class="status-panel">
+            <span class="empty-symbol">⌕</span>
+            <h3>No products found</h3>
+            <p>Try another search or select a different category.</p>
+            <button class="retry-button" (click)="search.set(''); selectCategory('All')">
+                Clear filters
+            </button>
+        </div>
+        } @else {
+        <div class="product-grid">
+            @for (product of filteredProducts(); track product._id) {
+            <article class="product-card">
+                <div class="product-image">
+                    <img [src]="product.image || 'https://placehold.co/600x450/f1f5f9/0f172a?text=ShopCart'"
+                        [alt]="product.name" loading="lazy" />
+
+                    @if (product.featured) {
+                    <span class="featured-badge">POPULAR PICK</span>
+                    }
+
+                    <span class="stock-indicator" [class.out-of-stock]="product.stock === 0">
+                        {{ product.stock > 0 ? 'In stock' : 'Sold out' }}
+                    </span>
+                </div>
+
+                <div class="product-info">
+                    <span class="product-category">{{ product.category }}</span>
+                    <h3>{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description }}</p>
+
+                    <div class="product-footer">
+                        <div class="product-price">
+                            <span>Price</span>
+                            <strong>
+                                {{ product.price | currency:'INR':'symbol':'1.0-0' }}
+                            </strong>
+                        </div>
+
+                        <button class="add-button" [disabled]="product.stock === 0" (click)="addToCart(product)"
+                            [attr.aria-label]="'Add ' + product.name + ' to cart'">
+                            Add to cart <span>+</span>
+                        </button>
+                    </div>
+                </div>
+            </article>
+            }
+        </div>
+        }
+    </section>
+
+    <footer class="store-footer">
+        <span class="footer-brand">shopcart.</span>
+        <span>Good technology. Thoughtfully chosen.</span>
+    </footer>
+</section>
